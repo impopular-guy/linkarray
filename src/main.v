@@ -31,15 +31,23 @@ pub fn (list LinkedArray[T]) len() int {
 	return list.len
 }
 
+// first returns the first element of the linked list
+pub fn (list LinkedArray[T]) first() !T {
+	if list.is_empty() {
+		return error('Linked array is empty')
+	}
+	return list.arr[list.head].data
+}
+
+// last returns the last element of the linked list
+pub fn (list LinkedArray[T]) last() !T {
+	if list.is_empty() {
+		return error('Linked array is empty')
+	}
+	return list.arr[list.tail].data
+}
+
 /*
-fn (list DoublyLinkedList[T]) first() !T
-first returns the first element of the linked list
-
-
-fn (list DoublyLinkedList[T]) last() !T
-last returns the last element of the linked list
-
-
 fn (mut list DoublyLinkedList[T]) push_back(item T)
 push_back adds an element to the end of the linked list
 
