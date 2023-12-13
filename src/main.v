@@ -6,16 +6,32 @@ pub fn version() string {
 	return linkedarray.version
 }
 
+struct Node[T] {
+mut:
+	data T
+	next u32
+	prev u32
+}
+
+pub struct LinkedArray[T] {
+mut:
+	arr  []Node[T]
+	head u32
+	tail u32
+	len  int
+}
+
+// is_empty checks if the linked list is empty
+pub fn (list LinkedArray[T]) is_empty() bool {
+	return list.len == 0
+}
+
+// len returns the length of the linked list
+pub fn (list LinkedArray[T]) len() int {
+	return list.len
+}
+
 /*
-
-fn (list DoublyLinkedList[T]) is_empty() bool
-is_empty checks if the linked list is empty
-
-
-fn (list DoublyLinkedList[T]) len() int
-len returns the length of the linked list
-
-
 fn (list DoublyLinkedList[T]) first() !T
 first returns the first element of the linked list
 
