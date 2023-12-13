@@ -45,3 +45,7 @@ Check the `./bench/` folder for more info.
 ## LICENSE
 
 MIT
+
+## Thanks
+
+Lot of code is taken to Vlangs official doubly-linked-list implemetation from its standard library. Thanks to them for making this project possible.

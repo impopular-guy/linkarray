@@ -1,3 +1,8 @@
+Here
+- `bench1_a.v` is uses array
+- `bench1_la.v` is uses LinkedArray
+- `bench1_ll.v` is uses datatypes.DoublyLinkedList
+
 ```bash
 
 > v -prod bench1_a.v
