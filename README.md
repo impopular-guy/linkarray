@@ -8,7 +8,7 @@ Doubly-Linked-List implementation using array. Why store addresses when you can 
 import linkarray as la
 
 fn main() {
-	mut list := la.linkarray[int]{}
+	mut list := la.LinkedArray[int]{}
 
 	println(list.is_empty())
 	println(list.len())
