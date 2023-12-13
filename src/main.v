@@ -1,23 +1,17 @@
 module linkedarray
 
-const version = '0.0.0'
-
-pub fn version() string {
-	return linkedarray.version
-}
-
 struct Node[T] {
 mut:
 	data T
-	next int
-	prev int
+	next int = -1
+	prev int = -1
 }
 
 pub struct LinkedArray[T] {
 mut:
 	arr  []Node[T]
-	head int
-	tail int
+	head int = -1
+	tail int = -1
 	len  int
 }
 
@@ -66,11 +60,26 @@ pub fn (mut list LinkedArray[T]) push_back(item T) {
 	list.len += 1
 }
 
+// push_front adds an element to the beginning of the linked list
+pub fn (mut list LinkedArray[T]) push_front(item T) {
+	mut new_node := Node[T]{
+		data: item
+	}
+	if list.is_empty() {
+		list.arr << new_node
+		list.head = 0
+		list.tail = 0
+	} else {
+		new_idx := list.arr.len
+		list.arr[list.head].prev = new_idx
+		new_node.next = list.head
+		list.head = new_idx
+		list.arr << new_node
+	}
+	list.len += 1
+}
+
 /*
-fn (mut list DoublyLinkedList[T]) push_front(item T)
-push_front adds an element to the beginning of the linked list
-
-
 fn (mut list DoublyLinkedList[T]) push_many(elements []T, direction Direction)
 push_many adds array of elements to the beginning of the linked list
 

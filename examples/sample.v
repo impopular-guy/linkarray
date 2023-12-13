@@ -3,8 +3,6 @@ module main
 import linkedarray as la
 
 fn main() {
-	println(la.version())
-
 	mut list := la.LinkedArray[int]{}
 	println('\nXXXX ${list}\n')
 
@@ -23,5 +21,7 @@ fn main() {
 	list.push_back(10)
 	println('\nXXXX ${list}\n')
 	list.push_back(20)
+	println('\nXXXX ${list}\n')
+	list.push_front(30)
 	println('\nXXXX ${list}\n')
 }
