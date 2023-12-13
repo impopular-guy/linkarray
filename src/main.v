@@ -101,15 +101,51 @@ pub fn (mut list LinkedArray[T]) push_many(elements []T, direction Direction) {
 	}
 }
 
+// pop_back removes the last element of the linked list
+pub fn (mut list LinkedArray[T]) pop_back() !T {
+	if list.is_empty() {
+		return error('Linked array is empty')
+	}
+	defer {
+		list.len -= 1
+	}
+	if list.len == 1 {
+		// head == tail
+		value := list.arr[list.tail].data
+		list.head = -1
+		list.tail = -1
+		list.arr.clear()
+		return value
+	}
+	value := list.arr[list.tail].data
+	list.tail = list.arr[list.tail].prev
+	list.arr[list.tail].next = -1
+	return value
+}
+
+// pop_front removes the last element of the linked list
+pub fn (mut list LinkedArray[T]) pop_front() !T {
+	if list.is_empty() {
+		return error('Linked array is empty')
+	}
+	defer {
+		list.len -= 1
+	}
+	if list.len == 1 {
+		// head == tail
+		value := list.arr[list.head].data
+		list.head = -1
+		list.tail = -1
+		list.arr.clear()
+		return value
+	}
+	value := list.arr[list.head].data
+	list.head = list.arr[list.head].next
+	list.arr[list.head].prev = -1
+	return value
+}
+
 /*
-fn (mut list DoublyLinkedList[T]) pop_back() !T
-pop_back removes the last element of the linked list
-
-
-fn (mut list DoublyLinkedList[T]) pop_front() !T
-pop_front removes the last element of the linked list
-
-
 fn (mut list DoublyLinkedList[T]) insert(idx int, item T) !
 insert adds an element to the linked list at the given index
 
@@ -120,14 +156,6 @@ index searches the linked list for item and returns the forward index or none if
 
 fn (mut list DoublyLinkedList[T]) delete(idx int)
 delete removes index idx from the linked list and is safe to call for any idx.
-
-
-fn (list DoublyLinkedList[T]) str() string
-str returns a string representation of the linked list
-
-
-fn (list DoublyLinkedList[T]) array() []T
-array returns a array representation of the linked list
 
 
 fn (mut list DoublyLinkedList[T]) next() ?T
@@ -141,3 +169,26 @@ iterator returns a new iterator instance for the list.
 fn (mut list DoublyLinkedList[T]) back_iterator() DoublyListIterBack[T]
 back_iterator returns a new backwards iterator instance for the list.
 */
+
+fn (n Node[T]) str() string {
+	return 'Node{prev: ${n.prev}, next: ${n.next}, data: ${n.data}}'
+}
+
+// array returns a array representation of the linked list
+pub fn (list LinkedArray[T]) array() []T {
+	mut result_array := []T{cap: list.len}
+	mut node_idx := list.head
+	for node_idx != -1 {
+		result_array << list.arr[node_idx].data
+		node_idx = list.arr[node_idx].next
+	}
+	return result_array
+}
+
+// str returns a string representation of the linked list
+pub fn (list LinkedArray[T]) str() string {
+	arr_str := list.arr.map(it.str()).join(',\n    ')
+	arr1_str := list.array().str()
+	rest := '\n  arr1: ${arr1_str}\n  head: ${list.head}\n  tail: ${list.tail}\n  len: ${list.len}'
+	return 'LinkedArray{\n  arr: [\n    ${arr_str}\n  ]${rest}\n}'
+}
