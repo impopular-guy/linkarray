@@ -1,6 +1,6 @@
 module main
 
-import linkedarray as ls
+import linkarray as ls
 
 fn main() {
 	mut list := ls.LinkedArray[int]{}

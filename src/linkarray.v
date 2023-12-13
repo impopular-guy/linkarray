@@ -1,4 +1,4 @@
-module linkedarray
+module linkarray
 
 const iter_nil = -2
 pub const nil_idx = -1
@@ -11,17 +11,17 @@ pub enum Direction {
 struct Node[T] {
 mut:
 	data T
-	next int = linkedarray.nil_idx
-	prev int = linkedarray.nil_idx
+	next int = linkarray.nil_idx
+	prev int = linkarray.nil_idx
 }
 
 pub struct LinkedArray[T] {
 mut:
 	arr  []Node[T]
-	head int = linkedarray.nil_idx
-	tail int = linkedarray.nil_idx
+	head int = linkarray.nil_idx
+	tail int = linkarray.nil_idx
 	len  int
-	iter int = linkedarray.iter_nil // internal
+	iter int = linkarray.iter_nil // internal
 }
 
 // is_empty checks if the linked list is empty
@@ -115,14 +115,14 @@ pub fn (mut list LinkedArray[T]) pop_back() !T {
 	}
 	if list.len == 1 {
 		value := list.arr[list.tail].data
-		list.head = linkedarray.nil_idx
-		list.tail = linkedarray.nil_idx
+		list.head = linkarray.nil_idx
+		list.tail = linkarray.nil_idx
 		list.arr.clear()
 		return value
 	}
 	value := list.arr[list.tail].data
 	list.tail = list.arr[list.tail].prev
-	list.arr[list.tail].next = linkedarray.nil_idx
+	list.arr[list.tail].next = linkarray.nil_idx
 	return value
 }
 
@@ -136,14 +136,14 @@ pub fn (mut list LinkedArray[T]) pop_front() !T {
 	}
 	if list.len == 1 {
 		value := list.arr[list.head].data
-		list.head = linkedarray.nil_idx
-		list.tail = linkedarray.nil_idx
+		list.head = linkarray.nil_idx
+		list.tail = linkarray.nil_idx
 		list.arr.clear()
 		return value
 	}
 	value := list.arr[list.head].data
 	list.head = list.arr[list.head].next
-	list.arr[list.head].prev = linkedarray.nil_idx
+	list.arr[list.head].prev = linkarray.nil_idx
 	return value
 }
 
@@ -235,12 +235,12 @@ pub fn (mut list LinkedArray[T]) delete(idx int) {
 
 // next implements the iter interface to use DoublyLinkedList with V's for x in list { loop syntax.
 fn (mut list LinkedArray[T]) next() ?T {
-	if list.iter == linkedarray.iter_nil {
+	if list.iter == linkarray.iter_nil {
 		list.iter = list.head
 		return list.next()
 	}
-	if list.iter == linkedarray.nil_idx {
-		list.iter = linkedarray.iter_nil
+	if list.iter == linkarray.nil_idx {
+		list.iter = linkarray.iter_nil
 		return none
 	}
 	defer {
@@ -281,7 +281,7 @@ pub struct LinkedArrayIter[T] {
 	list      &LinkedArray[T] = unsafe { nil }
 	direction Direction       = .front
 mut:
-	node_idx int = linkedarray.iter_nil
+	node_idx int = linkarray.iter_nil
 }
 
 // iterator returns a new iterator instance for both directions
@@ -299,7 +299,7 @@ pub fn (list LinkedArray[T]) iterator(dir Direction) LinkedArrayIter[T] {
 // next returns *the next* element of the list, or `none` when the end of the list is reached.
 // It is called by V's `for x in iter{` on each iteration.
 pub fn (mut iter LinkedArrayIter[T]) next() ?T {
-	if iter.node_idx == linkedarray.nil_idx {
+	if iter.node_idx == linkarray.nil_idx {
 		return none
 	}
 	node := iter.list.arr[iter.node_idx]
@@ -321,10 +321,10 @@ pub fn (mut list LinkedArray[T]) pack() {
 			next: i + 1
 		}
 	}
-	arr[arr.len - 1].next = linkedarray.nil_idx
+	arr[arr.len - 1].next = linkarray.nil_idx
 	list.arr.clear()
 	list.arr = arr
 	list.head = 0
 	list.tail = arr.len - 1
-	list.iter = linkedarray.iter_nil
+	list.iter = linkarray.iter_nil
 }

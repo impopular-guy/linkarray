@@ -1,4 +1,4 @@
-module linkedarray
+module linkarray
 
 fn test_is_empty() {
 	mut list := LinkedArray[int]{}

@@ -1,14 +1,14 @@
-# linkedarray
+# linkarray
 
 Doubly-Linked-List implementation using array. Why store addresses when you can store index ?
 
 ## Quickstart
 
 ```v
-import linkedarray as la
+import linkarray as la
 
 fn main() {
-	mut list := la.LinkedArray[int]{}
+	mut list := la.linkarray[int]{}
 
 	println(list.is_empty())
 	println(list.len())
