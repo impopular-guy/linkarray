@@ -1,5 +1,10 @@
 module linkedarray
 
+pub enum Direction {
+	front
+	back
+}
+
 struct Node[T] {
 mut:
 	data T
@@ -79,11 +84,24 @@ pub fn (mut list LinkedArray[T]) push_front(item T) {
 	list.len += 1
 }
 
+// push_many adds array of elements to the beginning/end of the linked list
+pub fn (mut list LinkedArray[T]) push_many(elements []T, direction Direction) {
+	match direction {
+		.front {
+			for i := elements.len - 1; i >= 0; i-- {
+				v := elements[i]
+				list.push_front(v)
+			}
+		}
+		.back {
+			for v in elements {
+				list.push_back(v)
+			}
+		}
+	}
+}
+
 /*
-fn (mut list DoublyLinkedList[T]) push_many(elements []T, direction Direction)
-push_many adds array of elements to the beginning of the linked list
-
-
 fn (mut list DoublyLinkedList[T]) pop_back() !T
 pop_back removes the last element of the linked list
 

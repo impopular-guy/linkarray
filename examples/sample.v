@@ -24,4 +24,8 @@ fn main() {
 	println('\nXXXX ${list}\n')
 	list.push_front(30)
 	println('\nXXXX ${list}\n')
+
+	list.push_many([40, 50], .front)
+	list.push_many([60, 70], .back)
+	println('\nXXXX ${list}\n')
 }
