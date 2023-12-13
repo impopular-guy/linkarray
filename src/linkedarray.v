@@ -249,21 +249,6 @@ fn (mut list LinkedArray[T]) next() ?T {
 	return list.arr[list.iter].data
 }
 
-/*
-fn compact(shink = false) {
-	reorgnize
-	shrink size if len very less than cap and shrink == true
-
-	or maybe just make a new array
-}
-
-fn sort(cmp fn(a,b) bool) {
-	compact()
-	sort normally
-	reconnect all nodex serially
-}
-*/
-
 fn (n Node[T]) str() string {
 	return 'Node{prev: ${n.prev}, next: ${n.next}, data: ${n.data}}'
 }
@@ -281,8 +266,61 @@ pub fn (list LinkedArray[T]) array() []T {
 
 // str returns a string representation of the linked list
 pub fn (list LinkedArray[T]) str() string {
+	return list.array().str()
+}
+
+// debug_str returns a string for debugging
+pub fn (list LinkedArray[T]) debug_str() string {
 	arr_str := list.arr.map(it.str()).join(',\n    ')
 	arr1_str := list.array().str()
 	rest := '\n  arr1: ${arr1_str}\n  head: ${list.head}\n  tail: ${list.tail}\n  len: ${list.len}'
 	return 'LinkedArray{\n  arr: [\n    ${arr_str}\n  ]${rest}\n}'
 }
+
+pub struct LinkedArrayIter[T] {
+	list      &LinkedArray[T] = unsafe { nil }
+	direction Direction       = .front
+mut:
+	node_idx int = linkedarray.iter_nil
+}
+
+pub fn (list LinkedArray[T]) iterator(dir Direction) LinkedArrayIter[T] {
+	return LinkedArrayIter[T]{
+		node_idx: match dir {
+			.front { list.head }
+			.back { list.tail }
+		}
+		direction: dir
+		list: &list
+	}
+}
+
+// next returns *the next* element of the list, or `none` when the end of the list is reached.
+// It is called by V's `for x in iter{` on each iteration.
+pub fn (mut iter LinkedArrayIter[T]) next() ?T {
+	if iter.node_idx == linkedarray.nil_idx {
+		return none
+	}
+	node := iter.list.arr[iter.node_idx]
+	res := node.data
+	iter.node_idx = match iter.direction {
+		.front { node.next }
+		.back { node.prev }
+	}
+	return res
+}
+
+/*
+fn compact(shink = false) {
+	reorgnize
+	shrink size if len very less than cap and shrink == true
+
+	or maybe just make a new array
+}
+
+fn sort(cmp fn(a,b) bool) {
+	compact()
+	sort normally
+	reconnect all nodex serially
+}
+*/

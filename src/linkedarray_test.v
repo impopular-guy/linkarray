@@ -168,17 +168,17 @@ fn test_index() {
 	}
 
 	for i := 0; i < 10; i++ {
-		assert list.index(i * 10)! == i
+		assert list.index(i * 10)? == i
 	}
 }
 
-// fn test_str() {
-// 	mut list := LinkedArray[int]{}
-// 	list.push_back(1)
-// 	list.push_back(2)
-// 	list.push_back(3)
-// 	assert list.str() == '[1, 2, 3]'
-// }
+fn test_str() {
+	mut list := LinkedArray[int]{}
+	list.push_back(1)
+	list.push_back(2)
+	list.push_back(3)
+	assert list.str() == '[1, 2, 3]'
+}
 
 fn test_array() {
 	mut list := LinkedArray[int]{}
@@ -208,31 +208,31 @@ fn test_iteration_with_for() {
 	assert res == [1, 2, 3]
 }
 
-// fn test_iterator() {
-// 	mut list := LinkedArray[int]{}
-// 	list.push_back(1)
-// 	list.push_back(2)
-// 	list.push_back(3)
-// 	mut iter := list.iterator()
-// 	mut res := []int{}
-// 	for x in iter {
-// 		res << x
-// 	}
-// 	assert res == [1, 2, 3]
-// }
+fn test_iterator() {
+	mut list := LinkedArray[int]{}
+	list.push_back(1)
+	list.push_back(2)
+	list.push_back(3)
+	mut iter := list.iterator(.front)
+	mut res := []int{}
+	for x in iter {
+		res << x
+	}
+	assert res == [1, 2, 3]
+}
 
-// fn test_back_iterator() {
-// 	mut list := LinkedArray[int]{}
-// 	list.push_back(1)
-// 	list.push_back(2)
-// 	list.push_back(3)
-// 	mut iter := list.back_iterator()
-// 	mut res := []int{}
-// 	for x in iter {
-// 		res << x
-// 	}
-// 	assert res == [3, 2, 1]
-// }
+fn test_back_iterator() {
+	mut list := LinkedArray[int]{}
+	list.push_back(1)
+	list.push_back(2)
+	list.push_back(3)
+	mut iter := list.iterator(.back)
+	mut res := []int{}
+	for x in iter {
+		res << x
+	}
+	assert res == [3, 2, 1]
+}
 
 fn test_push_many() {
 	mut list := LinkedArray[int]{}
