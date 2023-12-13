@@ -1,5 +1,8 @@
 module linkedarray
 
+const iter_nil = -2
+pub const nil_idx = -1
+
 pub enum Direction {
 	front
 	back
@@ -8,16 +11,17 @@ pub enum Direction {
 struct Node[T] {
 mut:
 	data T
-	next int = -1
-	prev int = -1
+	next int = linkedarray.nil_idx
+	prev int = linkedarray.nil_idx
 }
 
 pub struct LinkedArray[T] {
 mut:
 	arr  []Node[T]
-	head int = -1
-	tail int = -1
+	head int = linkedarray.nil_idx
+	tail int = linkedarray.nil_idx
 	len  int
+	iter int = linkedarray.iter_nil // internal
 }
 
 // is_empty checks if the linked list is empty
@@ -111,14 +115,14 @@ pub fn (mut list LinkedArray[T]) pop_back() !T {
 	}
 	if list.len == 1 {
 		value := list.arr[list.tail].data
-		list.head = -1
-		list.tail = -1
+		list.head = linkedarray.nil_idx
+		list.tail = linkedarray.nil_idx
 		list.arr.clear()
 		return value
 	}
 	value := list.arr[list.tail].data
 	list.tail = list.arr[list.tail].prev
-	list.arr[list.tail].next = -1
+	list.arr[list.tail].next = linkedarray.nil_idx
 	return value
 }
 
@@ -132,14 +136,14 @@ pub fn (mut list LinkedArray[T]) pop_front() !T {
 	}
 	if list.len == 1 {
 		value := list.arr[list.head].data
-		list.head = -1
-		list.tail = -1
+		list.head = linkedarray.nil_idx
+		list.tail = linkedarray.nil_idx
 		list.arr.clear()
 		return value
 	}
 	value := list.arr[list.head].data
 	list.head = list.arr[list.head].next
-	list.arr[list.head].prev = -1
+	list.arr[list.head].prev = linkedarray.nil_idx
 	return value
 }
 
@@ -229,21 +233,28 @@ pub fn (mut list LinkedArray[T]) delete(idx int) {
 	list.len -= 1
 }
 
+// next implements the iter interface to use DoublyLinkedList with V's for x in list { loop syntax.
+fn (mut list LinkedArray[T]) next() ?T {
+	if list.iter == linkedarray.iter_nil {
+		list.iter = list.head
+		return list.next()
+	}
+	if list.iter == linkedarray.nil_idx {
+		list.iter = linkedarray.iter_nil
+		return none
+	}
+	defer {
+		list.iter = list.arr[list.iter].next
+	}
+	return list.arr[list.iter].data
+}
+
 /*
-fn (mut list DoublyLinkedList[T]) next() ?T
-next implements the iter interface to use DoublyLinkedList with V's for x in list { loop syntax.
-
-
-fn (mut list DoublyLinkedList[T]) iterator() DoublyListIter[T]
-iterator returns a new iterator instance for the list.
-
-
-fn (mut list DoublyLinkedList[T]) back_iterator() DoublyListIterBack[T]
-back_iterator returns a new backwards iterator instance for the list.
-
 fn compact(shink = false) {
 	reorgnize
 	shrink size if len very less than cap and shrink == true
+
+	or maybe just make a new array
 }
 
 fn sort(cmp fn(a,b) bool) {

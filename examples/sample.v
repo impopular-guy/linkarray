@@ -54,4 +54,11 @@ fn main() {
 
 	list.delete(5)
 	println('\nDELETE 5 ${list}\n')
+
+	for x in list {
+		println('FOR x:${x}')
+	}
+	for i, x in list {
+		println('FOR i:${i} x:${x}')
+	}
 }
