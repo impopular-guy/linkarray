@@ -61,4 +61,8 @@ fn main() {
 	for i, x in list {
 		println('FOR i:${i} x:${x}')
 	}
+
+	println('\nLIST ${list.debug_str()}\n')
+	list.pack()
+	println('\nPACKED LIST ${list.debug_str()}\n')
 }

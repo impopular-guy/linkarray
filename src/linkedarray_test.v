@@ -248,3 +248,19 @@ fn test_push_many() {
 	}
 	assert res == [4, 5, 6, 1, 2, 3, 7, 8, 9]
 }
+
+fn test_pack() {
+	mut list := LinkedArray[int]{}
+	list.push_back(1)
+	list.push_back(2)
+	list.push_back(3)
+	list.push_many([4, 5, 6], .front)
+	list.push_many([7, 8, 9], .back)
+	list.delete(1)
+	list.delete(3)
+	list.delete(7)
+
+	before := list.array()
+	list.pack()
+	assert before == list.array()
+}

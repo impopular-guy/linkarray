@@ -284,6 +284,7 @@ mut:
 	node_idx int = linkedarray.iter_nil
 }
 
+// iterator returns a new iterator instance for both directions
 pub fn (list LinkedArray[T]) iterator(dir Direction) LinkedArrayIter[T] {
 	return LinkedArrayIter[T]{
 		node_idx: match dir {
@@ -310,17 +311,20 @@ pub fn (mut iter LinkedArrayIter[T]) next() ?T {
 	return res
 }
 
-/*
-fn compact(shink = false) {
-	reorgnize
-	shrink size if len very less than cap and shrink == true
-
-	or maybe just make a new array
+// pack reorganises the linked-list back into a serial manner. It creates a new array and populates it.
+pub fn (mut list LinkedArray[T]) pack() {
+	mut arr := []Node[T]{len: list.len}
+	for i, x in list {
+		arr[i] = Node[T]{
+			data: x
+			prev: i - 1
+			next: i + 1
+		}
+	}
+	arr[arr.len - 1].next = linkedarray.nil_idx
+	list.arr.clear()
+	list.arr = arr
+	list.head = 0
+	list.tail = arr.len - 1
+	list.iter = linkedarray.iter_nil
 }
-
-fn sort(cmp fn(a,b) bool) {
-	compact()
-	sort normally
-	reconnect all nodex serially
-}
-*/
