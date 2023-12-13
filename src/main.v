@@ -9,15 +9,15 @@ pub fn version() string {
 struct Node[T] {
 mut:
 	data T
-	next u32
-	prev u32
+	next int
+	prev int
 }
 
 pub struct LinkedArray[T] {
 mut:
 	arr  []Node[T]
-	head u32
-	tail u32
+	head int
+	tail int
 	len  int
 }
 
@@ -47,11 +47,26 @@ pub fn (list LinkedArray[T]) last() !T {
 	return list.arr[list.tail].data
 }
 
+// push_back adds an element to the end of the linked list
+pub fn (mut list LinkedArray[T]) push_back(item T) {
+	mut new_node := Node[T]{
+		data: item
+	}
+	if list.is_empty() {
+		list.arr << new_node
+		list.head = 0
+		list.tail = 0
+	} else {
+		new_idx := list.arr.len
+		list.arr[list.tail].next = new_idx
+		new_node.prev = list.tail
+		list.tail = new_idx
+		list.arr << new_node
+	}
+	list.len += 1
+}
+
 /*
-fn (mut list DoublyLinkedList[T]) push_back(item T)
-push_back adds an element to the end of the linked list
-
-
 fn (mut list DoublyLinkedList[T]) push_front(item T)
 push_front adds an element to the beginning of the linked list
 

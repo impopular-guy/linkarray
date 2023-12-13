@@ -5,8 +5,8 @@ import linkedarray as la
 fn main() {
 	println(la.version())
 
-	list := la.LinkedArray[int]{}
-	println(list)
+	mut list := la.LinkedArray[int]{}
+	println('\nXXXX ${list}\n')
 
 	println(list.is_empty())
 	println(list.len())
@@ -19,4 +19,9 @@ fn main() {
 		println(err)
 		-1
 	}
+
+	list.push_back(10)
+	println('\nXXXX ${list}\n')
+	list.push_back(20)
+	println('\nXXXX ${list}\n')
 }
