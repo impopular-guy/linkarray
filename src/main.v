@@ -110,7 +110,6 @@ pub fn (mut list LinkedArray[T]) pop_back() !T {
 		list.len -= 1
 	}
 	if list.len == 1 {
-		// head == tail
 		value := list.arr[list.tail].data
 		list.head = -1
 		list.tail = -1
@@ -132,7 +131,6 @@ pub fn (mut list LinkedArray[T]) pop_front() !T {
 		list.len -= 1
 	}
 	if list.len == 1 {
-		// head == tail
 		value := list.arr[list.head].data
 		list.head = -1
 		list.tail = -1
@@ -145,10 +143,57 @@ pub fn (mut list LinkedArray[T]) pop_front() !T {
 	return value
 }
 
-/*
-fn (mut list DoublyLinkedList[T]) insert(idx int, item T) !
-insert adds an element to the linked list at the given index
+// insert adds an element to the linked list at the given index
+pub fn (mut list LinkedArray[T]) insert(idx int, item T) ! {
+	if idx < 0 || idx > list.len {
+		return error('Index ${idx} out of bounds [0..${list.len}]')
+	} else if idx == 0 {
+		list.push_front(item)
+	} else if idx == list.len {
+		list.push_back(item)
+	} else {
+		before_idx := list.node_index_at(idx - 1)
+		new_idx := list.arr.len
+		next := list.arr[before_idx].next
+		list.arr[before_idx].next = new_idx
+		list.arr[next].prev = new_idx
 
+		new_node := Node[T]{
+			data: item
+			next: next
+			prev: before_idx
+		}
+		list.arr << new_node
+		list.len += 1
+	}
+}
+
+fn (list LinkedArray[T]) node_index_at(idx int) int {
+	if idx <= list.len / 2 {
+		mut node_idx := list.head
+		for h := 0; h < idx; h += 1 {
+			node_idx = list.arr[node_idx].next
+		}
+		return node_idx
+	}
+
+	mut node_idx := list.tail
+	for t := list.len - 1; t > idx; t -= 1 {
+		node_idx = list.arr[node_idx].prev
+	}
+	return node_idx
+}
+
+// at returns the element at the given index
+pub fn (list LinkedArray[T]) at(idx int) !T {
+	if idx < 0 || idx > list.len {
+		return error('Index ${idx} out of bounds [0..${list.len}]')
+	}
+	arr_idx := list.node_index_at(idx)
+	return list.arr[arr_idx].data
+}
+
+/*
 
 fn (list &DoublyLinkedList[T]) index(item T) !int
 index searches the linked list for item and returns the forward index or none if not found.
@@ -168,6 +213,17 @@ iterator returns a new iterator instance for the list.
 
 fn (mut list DoublyLinkedList[T]) back_iterator() DoublyListIterBack[T]
 back_iterator returns a new backwards iterator instance for the list.
+
+fn compact(shink = false) {
+	reorgnize
+	shrink size if len very less than cap and shrink == true
+}
+
+fn sort(cmp fn(a,b) bool) {
+	compact()
+	sort normally
+	reconnect all nodex serially
+}
 */
 
 fn (n Node[T]) str() string {

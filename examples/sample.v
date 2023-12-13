@@ -29,10 +29,21 @@ fn main() {
 	b := list.pop_back() or { 0 }
 	println('${b}\nPOP_BACK ${list}\n')
 
-	list.push_many([40, 50], .front)
-	list.push_many([60, 70], .back)
+	list.push_many([40, 50, 80], .front)
+	list.push_many([60, 70, 90], .back)
 	println('\nPUSH_MANY ${list}\n')
 
 	a1 := list.pop_front() or { 0 }
 	println('${a1}\nPOP_FRONT ${list}\n')
+
+	list.insert(1, 100)!
+	println('\nINSERT 1 ${list}\n')
+	list.insert(5, 101)!
+	println('\nINSERT 5 ${list}\n')
+	list.insert(3, 102)!
+	println('\nINSERT 3 ${list}\n')
+
+	println('AT 1 ${list.at(1)!}')
+	println('AT 3 ${list.at(3)!}')
+	println('AT 5 ${list.at(5)!}')
 }
