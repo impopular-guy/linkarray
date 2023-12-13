@@ -193,16 +193,43 @@ pub fn (list LinkedArray[T]) at(idx int) !T {
 	return list.arr[arr_idx].data
 }
 
+// index searches the linked list for item and returns the forward index or none if not found.
+pub fn (list LinkedArray[T]) index(item T) ?int {
+	mut hn := list.head
+	mut tn := list.tail
+	for h, t := 0, list.len - 1; h <= t; {
+		if list.arr[hn].data == item {
+			return h
+		} else if list.arr[tn].data == item {
+			return t
+		}
+		h += 1
+		hn = list.arr[hn].next
+		t -= 1
+		tn = list.arr[tn].prev
+	}
+	return none
+}
+
+// delete removes index idx from the linked list and is safe to call for any idx.
+pub fn (mut list LinkedArray[T]) delete(idx int) {
+	if idx < 0 || idx >= list.len {
+		return
+	} else if idx == 0 {
+		list.pop_front() or {}
+		return
+	} else if idx == list.len - 1 {
+		list.pop_back() or {}
+		return
+	}
+	node_idx := list.node_index_at(idx)
+	prev, next := list.arr[node_idx].prev, list.arr[node_idx].next
+	list.arr[prev].next = next
+	list.arr[next].prev = prev
+	list.len -= 1
+}
+
 /*
-
-fn (list &DoublyLinkedList[T]) index(item T) !int
-index searches the linked list for item and returns the forward index or none if not found.
-
-
-fn (mut list DoublyLinkedList[T]) delete(idx int)
-delete removes index idx from the linked list and is safe to call for any idx.
-
-
 fn (mut list DoublyLinkedList[T]) next() ?T
 next implements the iter interface to use DoublyLinkedList with V's for x in list { loop syntax.
 

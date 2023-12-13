@@ -46,4 +46,12 @@ fn main() {
 	println('AT 1 ${list.at(1)!}')
 	println('AT 3 ${list.at(3)!}')
 	println('AT 5 ${list.at(5)!}')
+
+	println('INDEX 100 ${list.index(100)}')
+	println('INDEX 101 ${list.index(101)}')
+	println('INDEX 102 ${list.index(102)}')
+	println('INDEX 999 ${list.index(999)}')
+
+	list.delete(5)
+	println('\nDELETE 5 ${list}\n')
 }
