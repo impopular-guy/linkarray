@@ -24,7 +24,7 @@ fn main() {
 
 	println('ITEM AT 1 ${list.at(1)!}')
 
-	println('SEARCH 100 ${list.index(101)}')
+	println('SEARCH 101 ${list.index(101)}')
 
 	list.delete(5)
 
